@@ -50,7 +50,7 @@ pipeline {
             steps {
                 sh '''
                 echo "Waiting for MySQL..."
-                for i in {1..30}; do
+                for i in $(seq 1 30); do
                   if docker exec $MYSQL_CONTAINER mysqladmin ping -h "localhost" --silent; then
                     echo "MySQL is ready! Waiting extra time..."
                     sleep 10
