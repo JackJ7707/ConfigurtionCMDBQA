@@ -14,8 +14,8 @@ pipeline {
         stage('Cleanup') {
             steps {
                 sh '''
-                docker network rm $NETWORK_NAME || true
                 docker rm -f $MYSQL_CONTAINER $APP_CONTAINER $PHPMYADMIN_CONTAINER || true
+                docker network rm $NETWORK_NAME || true
                 docker rmi cmdb-app-image || true
                 '''
             }
