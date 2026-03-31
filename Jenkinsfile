@@ -57,27 +57,28 @@ pipeline {
                 '''
             }
         }
-
-        stage('Start Python Container') {
-            steps {
-                sh '''
-                docker run -d \
-                  --name $APP_CONTAINER \
-                  --network $NETWORK_NAME \
-                  cmdb-app-image tail -f /dev/null
-                '''
-            }
-        }
-
+        
         stage('Run CMDB Script') {
             steps {
-                sh 'docker exec $APP_CONTAINER python Python/createcmdb.py'
+                sh '''
+                docker run --rm \
+                  --name $APP_CONTAINER \
+                  --network $NETWORK_NAME \
+                  cmdb-app-image \
+                  python Python/createcmdb.py
+                '''
             }
         }
 
         stage('Run Tests') {
             steps {
-                sh 'docker exec $APP_CONTAINER python -m unittest Python/test_insert.py'
+                sh '''
+                docker run --rm \
+                  --name ${APP_CONTAINER}_tests \
+                  --network $NETWORK_NAME \
+                  cmdb-app-image \
+                  python -m unittest Python/test_insert.py
+                '''
             }
         }
 
