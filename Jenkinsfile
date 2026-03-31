@@ -41,6 +41,7 @@ pipeline {
                   --network $NETWORK_NAME \
                   -e MYSQL_ROOT_PASSWORD=$MYSQL_ROOT_PASSWORD \
                   -e MYSQL_DATABASE=NetworkDevicesCMDB \
+                  -e MYSQL_ROOT_HOST=% \
                   mysql:8.3
                 '''
             }
