@@ -67,6 +67,18 @@ pipeline {
                 '''
             }
         }
+
+        stage('Fix MySQL Permissions') {
+            steps {
+                sh '''
+                docker exec $MYSQL_CONTAINER mysql -uroot -p$MYSQL_ROOT_PASSWORD -e "
+                CREATE USER IF NOT EXISTS 'cmdbuser'@'%' IDENTIFIED BY 'cmdbpass';
+                GRANT ALL PRIVILEGES ON NetworkDevicesCMDB.* TO 'cmdbuser'@'%';
+                FLUSH PRIVILEGES;
+                "
+                '''
+            }
+        }
         
         stage('Run CMDB Script') {
             steps {
