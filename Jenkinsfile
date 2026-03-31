@@ -51,9 +51,17 @@ pipeline {
                 sh '''
                 echo "Waiting for MySQL..."
                 for i in {1..30}; do
-                  docker exec $MYSQL_CONTAINER mysqladmin ping -h "localhost" --silent && break
+                  if docker exec $MYSQL_CONTAINER mysqladmin ping -h "localhost" --silent; then
+                    echo "MySQL is ready! Waiting extra time..."
+                    sleep 10
+                    exit 0
+                  fi
+                  echo "Still waiting..."
                   sleep 2
                 done
+
+                echo "MySQL failed to start in time"
+                exit 1
                 '''
             }
         }
@@ -105,7 +113,7 @@ pipeline {
 
     post {
         success {
-            echo "CMDB running - open http://localhost:8080"
+            echo "CMDB running - open http://localhost:8081"
         }
         failure {
             echo "Pipeline failed - check logs"
