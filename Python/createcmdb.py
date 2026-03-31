@@ -3,8 +3,8 @@ import mysql.connector
 from mysql.connector import errorcode
 
 DB_CONFIG = {
-    'user':     'root',
-    'password': 'StrongPassword123!',
+    'user':     'cmdbuser',
+    'password': 'cmdbpass',
     'host':     'cmdb-mysql',
     'port':     3306,
     'ssl_disabled': True
