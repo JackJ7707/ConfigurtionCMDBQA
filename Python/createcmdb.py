@@ -4,8 +4,8 @@ from mysql.connector import errorcode
 
 DB_CONFIG = {
     'user':     'root',
-    'password': 'your_mysql_root_password',
-    'host':     '127.0.0.1',
+    'password': 'StrongPassword123!',
+    'host':     'cmdb-mysql',
     'port':     3306,
     'ssl_disabled': True
 }
