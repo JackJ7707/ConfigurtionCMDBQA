@@ -88,7 +88,7 @@ pipeline {
                 docker run -d \
                   --name $PHPMYADMIN_CONTAINER \
                   --network $NETWORK_NAME \
-                  -p 8080:80 \
+                  -p 8081:80 \
                   -e PMA_HOST=$MYSQL_CONTAINER \
                   -e PMA_PORT=3306 \
                   phpmyadmin/phpmyadmin
