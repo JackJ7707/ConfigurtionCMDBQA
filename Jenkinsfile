@@ -73,8 +73,7 @@ pipeline {
                 sh '''
                  docker exec $MYSQL_CONTAINER mysql -uroot -p$MYSQL_ROOT_PASSWORD -e "
                  DROP USER IF EXISTS 'cmdbuser'@'%';
-                 DROP USER IF EXISTS 'cmdbuser'@'localhost';
-                 CREATE USER 'cmdbuser'@'%' IDENTIFIED BY 'cmdbpass';
+                 CREATE USER 'cmdbuser'@'%' IDENTIFIED WITH mysql_native_password BY 'cmdbpass';
                  GRANT ALL PRIVILEGES ON NetworkDevicesCMDB.* TO 'cmdbuser'@'%';
                  FLUSH PRIVILEGES;
                 "
