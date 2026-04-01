@@ -73,7 +73,7 @@ pipeline {
                 sh '''
                 docker exec $MYSQL_CONTAINER mysql -uroot -p$MYSQL_ROOT_PASSWORD -e "
                 CREATE DATABASE IF NOT EXISTS NetworkDevicesCMDB;
-                CREATE USER IF NOT EXISTS 'cmdbuser'@'%' IDENTIFIED BY 'cmdbpass';
+                CREATE USER IF NOT EXISTS 'cmdbuser'@'%' IDENTIFIED WITH mysql_native_password BY 'cmdbpass';
                 GRANT ALL PRIVILEGES ON NetworkDevicesCMDB.* TO 'cmdbuser'@'%';
                 FLUSH PRIVILEGES;
                 SHOW GRANTS FOR 'cmdbuser'@'%';
