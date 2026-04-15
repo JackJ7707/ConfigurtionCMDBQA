@@ -51,19 +51,14 @@ pipeline {
         stage('Wait for MySQL') {
             steps {
                 sh '''
-                echo "Waiting for MySQL..."
-                for i in $(seq 1 30); do
-                  if docker exec $MYSQL_CONTAINER mysqladmin ping -h "localhost" --silent; then
-                    echo "MySQL is ready! Waiting extra time..."
-                    sleep 10
-                    exit 0
-                  fi
-                  echo "Still waiting..."
+                echo "Waiting for MySQL to be fully ready..."
+                
+                until docker exec $MYSQL_CONTAINER mysql -uroot -p$MYSQL_ROOT_PASSWORD -e "SELECT 1" > /dev/null 2>&1; do
+                  echo "Still waiting for MySQL..."
                   sleep 2
                 done
 
-                echo "MySQL failed to start in time"
-                exit 1
+                echo "MySQL is fully ready!"
                 '''
             }
         }
@@ -71,7 +66,7 @@ pipeline {
         stage('Fix MySQL Permissions') {
             steps {
                 sh '''
-                 docker exec $MYSQL_CONTAINER mysql -uroot -p$MYSQL_ROOT_PASSWORD -e "
+                 docker exec $MYSQL_CONTAINER mysql -h 127.0.0.1 -uroot -p$MYSQL_ROOT_PASSWORD -e "
                  DROP USER IF EXISTS 'cmdbuser'@'%';
                  CREATE USER 'cmdbuser'@'%' IDENTIFIED WITH mysql_native_password BY 'cmdbpass';
                  GRANT ALL PRIVILEGES ON NetworkDevicesCMDB.* TO 'cmdbuser'@'%';
